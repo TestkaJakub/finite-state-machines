@@ -86,4 +86,26 @@ impl FiniteStateMachine {
             }
         }
     }
+
+    pub fn get_current_state(&self) -> Option<String> {
+        self.current_state.as_ref().map(|v| v.borrow().name.clone())
+    }
+
+    pub fn get_possible_transitions(&self) -> Option<Vec<String>> {
+        if let None = self.current_state {
+            return  None;
+        }
+        
+        if self.current_state.as_ref().unwrap().borrow().transitions.len() == 0 {
+            return None
+        }
+
+        let mut possible_transitions = Vec::new();
+
+        for transition in self.current_state.as_ref().unwrap().borrow().transitions.iter(){
+            possible_transitions.push(transition.0.to_string());
+        }
+
+        Some(possible_transitions)
+    }
 }
